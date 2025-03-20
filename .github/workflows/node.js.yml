@@ -10,9 +10,33 @@ on:
     branches: ["main"]
 
 jobs:
-  build:
+  checkRunTests:
     runs-on: ubuntu-latest
+    # Declare outputs for next jobs
+    outputs:
+      runTests: ${{ steps.checkRunTests.outputs.runTests }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Checkout as many commits as needed for the diff
+          fetch-depth: 2
+      - shell: pwsh
+        id: checkRunTests
+        run: |
+          # Diff HEAD with the previous commit
+          $diff = git diff --name-only HEAD^ HEAD
 
+          # Check if a file under Day_$/ has changed (added, modified, deleted)
+          $SourceDiff = $diff | Where-Object { $_ -match 'Day_$' }
+          $HasDiff = $SourceDiff.Length -gt 0
+
+          # Set the output named "runTests"
+          Write-Host "::set-output name=runTests::$HasDiff"
+
+  runTests:
+    runs-on: ubuntu-latest
+    needs: [checkRunTests]
+    if: needs.checkRunTests.outputs.runTests == 'True'
     strategy:
       matrix:
         node-version: [18.x, 20.x, 22.x]
@@ -23,24 +47,15 @@ jobs:
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
-          filters: |
-            Day:
-              - 'Day**'
           node-version: ${{ matrix.node-version }}
           cache: "yarn"
 
       - name: Run install
         uses: borales/actions-yarn@v4
         with:
-          filters: |
-            Day:
-              - 'Day**'
           cmd: install # will run `yarn install` command
 
       - name: Test the app with jest
         uses: borales/actions-yarn@v4
         with:
-          filters: |
-            Day:
-              - 'Day**'
           cmd: jest-test # will run `yarn test` command
