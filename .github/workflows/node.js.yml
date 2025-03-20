@@ -31,7 +31,7 @@ jobs:
           $HasDiff = $SourceDiff.Length -gt 0
 
           # Set the output named "runTests"
-          Write-Host "::set-output name=runTests::$HasDiff"
+          Write-Host "{name}={value}" >> $GITHUB_OUTPUT
 
   runTests:
     runs-on: ubuntu-latest
