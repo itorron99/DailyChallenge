@@ -5,9 +5,9 @@
   },
   "lint-staged": {
     "*.js": [
-      "eslint --fix",
-      "git add",
-      "jest --bail --findRelatedTests"
+      "eslint --cache --fix --max-warnings=0",
+      "prettier --write",
+      "yarn jest --bail --passWithNoTests --findRelatedTests $(git statis --porcelain | grep M | awk '{print $2}')"
     ]
   },
   "dependencies": {
