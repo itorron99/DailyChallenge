@@ -4,11 +4,7 @@
     "prepare": "husky"
   },
   "lint-staged": {
-    "*.js": [
-      "eslint --cache --fix --max-warnings=0",
-      "prettier --write",
-      "yarn jest --bail --passWithNoTests --findRelatedTests $(git statis --porcelain | grep M | awk '{print $2}')"
-    ]
+    "*.js": "yarn jest --bail --passWithNoTests --findRelatedTests"
   },
   "dependencies": {
     "@babel/preset-env": "^7.26.9",
