@@ -1,6 +1,11 @@
 import { prepareGifts } from ".";
 
 describe("prepareGifts function", () => {
+  test("should return a string", () => {
+    const result = prepareGifts([]);
+    expect.arrayContaining(result);
+  });
+
   test("should return empty array if input is [] | undefined | null | number | string | NaN | boolean | infinity", () => {
     const emptyResult = prepareGifts([]);
     const undefinedResult = prepareGifts(undefined);
