@@ -25,7 +25,14 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+        cache: 'yarn'
+        
+    - name: Run install
+      uses: borales/actions-yarn@v4
+      with:
+        cmd: install # will run `yarn install` command
+        
+    - name: Test the app with jest
+      uses: borales/actions-yarn@v4
+      with:
+        cmd: jest-test # will run `yarn test` command
