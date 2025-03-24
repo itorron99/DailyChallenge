@@ -36,4 +36,4 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Test the app with jest
-        run: jest-test
+        run: yarn jest-test
