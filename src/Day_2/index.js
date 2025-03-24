@@ -18,5 +18,3 @@ export const createFrame = (names) => {
 
   return [border, ...framedNames, border].join("\n");
 };
-
-console.log(createFrame(["buzz", "bb", "fizzbuzz"]));
